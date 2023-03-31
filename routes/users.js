@@ -10,7 +10,7 @@ import {
 const router = express.Router();
 
 router.get("/login", ensureNotAuthenticated, (req, res) => {
-  res.render("login", {
+  res.render("users/login", {
     pageTitle: "Login",
     successMsg: req.flash("successMsg"),
     errorMsg: req.flash("error"),
@@ -27,7 +27,7 @@ router.post(
 );
 
 router.get("/register", ensureNotAuthenticated, (req, res) => {
-  res.render("register", {
+  res.render("users/register", {
     pageTitle: "Register",
   });
 });
@@ -43,7 +43,7 @@ router.post("/register", async (req, res) => {
   }
 
   if (errorMsg) {
-    res.render("register", {
+    res.render("users/register", {
       pageTitle: "Register",
       name,
       email,
