@@ -1,26 +1,41 @@
-<h2>All Posts</h2>
+<h1 class="text-center mt-3">All Posts</h1>
 {{> messages }}
 
-{{#if loggedInUser}}
-  <a href="/posts/add" class="btn btn-primary">New post</a>
-  <form action="/users/logout" method="post">
-    <input type="submit" value="Logout" class="btn btn-secondary">
-  </form>
-{{else}}
-  <a href="/users/login" class="btn btn-secondary">Login</a>
-{{/if}}
+<div class="d-flex justify-content-end column-gap-3 mt-3">
+  {{#if loggedInUser}}
+    <a href="/posts/add" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i>New post</a>
+    <form action="/users/logout" method="post">
+      <input type="submit" value="Logout" class="btn btn-secondary">
+    </form>
+  {{else}}
+    <a href="/users/login" class="btn btn-primary mt-3">Login</a>
+  {{/if}}
+</div>
 
 {{#if posts}}
-  {{#each posts}}
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">{{this.title}}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">by {{this.user.name}}</h6>
-        <p class="card-text">This post was created {{relativeDate this.createdAt }}</p>
-        <a href="/posts/view/{{this._id}}" class="btn btn-info">Read more</a>
-      </div>
-    </div>
-  {{/each}}
+  <table class="table table-bordered table-striped mt-4 text-center">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Author</th>
+        <th scope="col">Created At</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each posts}}
+        <tr>
+          <th scope="row">{{addOne @index}}</th>
+          <td>{{this.title}}</td>
+          <td>{{this.user.name}}</td>
+          <td>{{relativeDate this.createdAt}}</td>
+          <td><a href="/posts/view/{{this._id}}" class="btn btn-info btn-sm">Read more</a></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
 {{else}}
   <h5>There are no public posts yet</h5>
 {{/if}}

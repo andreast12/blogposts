@@ -1,8 +1,9 @@
-<a href="/" class="btn btn-secondary">Back</a>
+<a href="/" class="btn btn-secondary mt-3"><i class="bi bi-arrow-left-circle me-1"></i>Back</a>
 {{> messages }}
 
-<h2>{{post.title}}</h2>
-<h5>Created by {{post.user.name}} at {{absoluteDate post.createdAt}}</h5>
+<h1 class="mt-3">{{post.title}}</h1>
+<h6>Created by {{post.user.name}} at {{absoluteDate post.createdAt}}</h6>
+<hr>
 <p>
 
   {{post.body}}
