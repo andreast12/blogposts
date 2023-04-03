@@ -7,11 +7,11 @@ const router = express.Router();
 
 router.get("/view/:id", async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    res.send("Invalid ID");
+    res.status(400).send("Invalid ID");
   } else {
     const post = await Post.findById(req.params.id).populate("user").lean();
     if (!post) {
-      res.send("404 Not Found");
+      res.status(404).send("404 Not Found");
     } else {
       res.render("posts/view", {
         pageTitle: post.title,
@@ -29,7 +29,7 @@ router.get("/add", ensureAuthenticated, (req, res) => {
   });
 });
 
-router.post("/add", async (req, res) => {
+router.post("/add", ensureAuthenticated, async (req, res) => {
   const { title, body } = req.body;
   await Post.create({
     title,
@@ -43,13 +43,13 @@ router.post("/add", async (req, res) => {
 
 router.get("/edit/:id", ensureAuthenticated, async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    res.send("Invalid ID");
+    res.status(400).send("Invalid ID");
   } else {
     const post = await Post.findById(req.params.id).populate("user").lean();
     if (!post) {
-      res.send("404 Not Found");
+      res.status(404).send("404 Not Found");
     } else if (post.user._id.toString() !== req.user.id) {
-      res.send("403 Forbidden");
+      res.status(403).send("403 Forbidden");
     } else {
       res.render("posts/edit", {
         pageTitle: "Edit post",
@@ -60,7 +60,7 @@ router.get("/edit/:id", ensureAuthenticated, async (req, res) => {
   }
 });
 
-router.put("/edit/:id", async (req, res) => {
+router.put("/edit/:id", ensureAuthenticated, async (req, res) => {
   const { title, body } = req.body;
   const post = await Post.findById(req.params.id);
   post.title = title;
@@ -70,7 +70,7 @@ router.put("/edit/:id", async (req, res) => {
   res.redirect(`/posts/view/${req.params.id}`);
 });
 
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/delete/:id", ensureAuthenticated, async (req, res) => {
   await Post.deleteOne({ _id: req.params.id });
   req.flash("successMsg", "Your post has been deleted");
   res.redirect("/");

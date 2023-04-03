@@ -2,7 +2,10 @@ import express from "express";
 import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import passport from "passport";
-import { ensureNotAuthenticated } from "../utils/authentication.js";
+import {
+  ensureAuthenticated,
+  ensureNotAuthenticated,
+} from "../utils/authentication.js";
 
 const router = express.Router();
 
@@ -16,6 +19,7 @@ router.get("/login", ensureNotAuthenticated, (req, res) => {
 
 router.post(
   "/login",
+  ensureNotAuthenticated,
   passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/users/login",
@@ -29,7 +33,7 @@ router.get("/register", ensureNotAuthenticated, (req, res) => {
   });
 });
 
-router.post("/register", async (req, res) => {
+router.post("/register", ensureNotAuthenticated, async (req, res) => {
   const { name, email, password, confirmPassword } = req.body;
   let errorMsg;
   if (password !== confirmPassword) {
@@ -60,7 +64,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/logout", (req, res) => {
+router.post("/logout", ensureAuthenticated, (req, res) => {
   req.logout(() => res.redirect("/users/login"));
 });
 
