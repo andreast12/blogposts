@@ -1,11 +1,7 @@
-<form method="post" class="w-50 m-auto mt-5 border border-2 p-4">
+<form action="" method="post" class="w-50 m-auto mt-5 border border-2 p-4">
   <h2 class="text-center">Login</h2>
-  {{#if successMsg}}
-    <div class="alert alert-success" role="alert">{{successMsg}}</div>
-  {{/if}}
-  {{#if errorMsg}}
-    <div class="alert alert-danger" role="alert">{{errorMsg}}</div>
-  {{/if}}
+  {{> messages }}
+
   <div class="mb-3">
     <label for="inputEmail" class="form-label">Email address</label>
     <input type="email" class="form-control" id="inputEmail" name="email" required>

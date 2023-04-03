@@ -1,0 +1,11 @@
+<a href="/" class="btn btn-secondary">Back</a>
+{{> messages }}
+
+<h2>{{post.title}}</h2>
+<h5>Created by {{post.user.name}} at {{absoluteDate post.createdAt}}</h5>
+<p>
+
+  {{post.body}}
+</p>
+
+{{{renderEditDeleteIcon post.user loggedInUser post._id }}}

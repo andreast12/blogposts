@@ -2,10 +2,7 @@ import express from "express";
 import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import passport from "passport";
-import {
-  ensureAuthenticated,
-  ensureNotAuthenticated,
-} from "../utils/authentication.js";
+import { ensureNotAuthenticated } from "../utils/authentication.js";
 
 const router = express.Router();
 
@@ -52,22 +49,18 @@ router.post("/register", async (req, res) => {
       errorMsg,
     });
   } else {
-    try {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      await User.create({
-        name,
-        email,
-        password: hashedPassword,
-      });
-      req.flash("successMsg", "Registration successful");
-      res.redirect("/users/login");
-    } catch (err) {
-      console.log(err);
-    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await User.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+    req.flash("successMsg", "Registration successful");
+    res.redirect("/users/login");
   }
 });
 
-router.post("/logout", ensureAuthenticated, (req, res) => {
+router.post("/logout", (req, res) => {
   req.logout(() => res.redirect("/users/login"));
 });
 

@@ -1,4 +1,26 @@
-<h1>Blogposts App</h1>
-<form action="/users/logout" method="post" class="mt-4">
-  <input type="submit" class="btn btn-primary" value="Logout">
-</form>
+<h2>All Posts</h2>
+{{> messages }}
+
+{{#if loggedInUser}}
+  <a href="/posts/add" class="btn btn-primary">New post</a>
+  <form action="/users/logout" method="post">
+    <input type="submit" value="Logout" class="btn btn-secondary">
+  </form>
+{{else}}
+  <a href="/users/login" class="btn btn-secondary">Login</a>
+{{/if}}
+
+{{#if posts}}
+  {{#each posts}}
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{this.title}}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">by {{this.user.name}}</h6>
+        <p class="card-text">This post was created {{relativeDate this.createdAt }}</p>
+        <a href="/posts/view/{{this._id}}" class="btn btn-info">Read more</a>
+      </div>
+    </div>
+  {{/each}}
+{{else}}
+  <h5>There are no public posts yet</h5>
+{{/if}}

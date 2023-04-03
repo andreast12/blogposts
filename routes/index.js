@@ -1,11 +1,19 @@
 import express from "express";
-import { ensureAuthenticated } from "../utils/authentication.js";
+import Post from "../models/Post.js";
 
 const router = express.Router();
 
-router.get("/", ensureAuthenticated, (req, res) => {
+router.get("/", async (req, res) => {
+  const posts = await Post.find()
+    .populate("user")
+    .sort({ createdAt: "desc" })
+    .lean();
+
   res.render("index", {
-    pageTitle: "Blogposts App",
+    pageTitle: "Blogposts",
+    posts,
+    loggedInUser: req.user,
+    successMsg: req.flash("successMsg"),
   });
 });
 

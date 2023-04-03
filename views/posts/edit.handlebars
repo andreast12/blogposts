@@ -1,0 +1,17 @@
+<form action="/posts/edit/{{post._id}}?_method=put" method="post" class="mt-5">
+  <div class="form-floating mb-4">
+    <input type="text" class="form-control" id="inputTitle" placeholder="dummy" name="title" required
+      value="{{post.title}}">
+    <label for="inputTitle" class="form-label">Title</label>
+  </div>
+
+  <div class="form-floating mb-4">
+    <textarea class="form-control" id="inputBody" placeholder="dummy" style="height: 250px;" name="body"
+      required>{{post.body}}</textarea>
+    <label for="inputBody" class="form-label">Body</label>
+  </div>
+
+  <input type="submit" value="Submit" class="btn btn-primary">
+</form>
+
+<a href="/posts/view/{{post._id}}" class="btn btn-secondary">Cancel</a>
